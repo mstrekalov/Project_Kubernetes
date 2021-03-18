@@ -1,0 +1,65 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: my-web
+  labels:
+    app: web
+    env: prod
+    owner: mstrekalov
+spec:
+  selector:
+    matchLabels:
+      project: kefir_project
+  template:
+    metadata:
+      labels:
+        project: kefir_project
+    spec:        
+      containers:
+        - name: kefir
+          image: mstrekalov/kefir:latest
+          ports:
+          - containerPort: 80  
+
+---
+apiVersion : autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-autoscaling
+spec:
+  scaleTargetRef:
+    apiVersion : apps/v2beta1v1
+    kind: Deployment
+    name: my-web
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageUtilization: 80
+
+---
+apiVersion : v1
+kind: Service
+metadata:
+  name: my-web-service
+  labels:
+    app: web
+    env: prod
+    owner: mstrekalov
+spec:        
+      type: LoadBalancer
+      selector:
+        project: kefir_project
+      ports:
+        - name: kefir-port
+          protocol: TCP
+          port: 8080
+          targetPort: 80 
+
+        

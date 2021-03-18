@@ -1,0 +1,4 @@
+container:
+  image: mstrekalov/kefir:latest
+
+replicaCount: 2

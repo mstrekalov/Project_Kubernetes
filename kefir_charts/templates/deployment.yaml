@@ -1,0 +1,21 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: my-web-deployment
+  labels:
+    app : my-web-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      project: Kefir_project 
+  template:
+    metadata:
+      labels:
+        project: Kefir_project 
+    spec:
+      containers:
+        - name : kefir-web
+          image: {{ .Values.container.image }}
+          ports:
+            - containerPort: 80
