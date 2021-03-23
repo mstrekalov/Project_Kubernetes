@@ -1,12 +1,20 @@
-node {
+#!groovy
+// Run docker build
+properties([disableConcurrentBuilds()])
 
-    checkout scm
-       
-    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+pipeline {
+    agent { 
+        label 'master'
+        }
 
-        def image = docker.build("mstrekalov/kefir")
-        image.push()    
-        
+            stage("create docker image") {
+            steps {
+                echo " ============== start building image =================="
+                
+                sh 'docker build -t semaev/toolbox:latest . '
+
+            }
+        }
+
     }
-
 }
