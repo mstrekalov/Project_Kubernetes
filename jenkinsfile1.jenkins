@@ -1,5 +1,3 @@
-#!groovy
-// Run docker build
 node {
 
     checkout scm
