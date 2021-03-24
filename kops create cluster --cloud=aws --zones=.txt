@@ -1,0 +1,1 @@
+kops create cluster --cloud=aws --zones=ca-central-1a --name=maks1.valaxy.in --dns-zone=valaxy.in --dns private --master-size t2.micro --master-count 1 --node-size t2.micro --node-count 1
